@@ -6,9 +6,18 @@ let mazeWidth = 600;
 let mazeHeight = 600;
 let intervalVar;
 
-function getMaze1(){
-  return fetch()
-}
+
+// let getMaze1 = function (){
+//   return fetch('http://localhost:3000/api/v1/mazes/1')
+//   .then(function (response) {return response.json() })
+//   .then(function (maze){
+//     maze = maze.file
+//     return maze
+//   })
+// }
+
+// let filename = getMaze1();
+
 
 function getScores(){
   return fetch('http://localhost:3000/api/v1/scores')
@@ -21,7 +30,6 @@ function getScores(){
         Name: ${score.player} - Score: ${score.score}
         `
         ul.appendChild(scoreLi)
-        console.log(scoreLi)
       })
     })
 }
@@ -61,9 +69,8 @@ scoreCounter.appendChild(scoreHolder)
 
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
-    // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
-        // context.drawImage(mazeImg, 0, 0);
+        context.drawImage(mazeImg, 0, 0);
         // context.beginPath();
         // context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :(
         // context.closePath();
@@ -73,9 +80,9 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     }
 
     scoreNum += 1
-    console.log(scoreNum)
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
-    mazeImg.src = "assets/simplemaze.png"
+    mazeImg.crossOrigin = "Anonymous";
+    mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
     canMoveTo(squareX, squareY)
     drawPaddle()
 }
@@ -106,7 +113,9 @@ function drawImage(){ //second layer code
         imgContext.fillStyle = '#00FF00';
         imgContext.fill();
     };
-        mazeImg.src = "assets/simplemaze.png";
+        mazeImg.crossOrigin = "Anonymous";
+        mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
+        ;
 
 }
 
@@ -133,14 +142,10 @@ function canMoveTo(squareX, squareY) {
   else {
       canMove = 0;
   }
-  // console.log(canMove)
   return canMove;
 
   
-// }
+}
 drawImage()
 setInterval(drawMazeAndRectangle,1000/60) //score is done on a fixed 60fps timer (more resource intensive) however, this allows us to append our score counter to this, causing it to go up by 1 every frame and then do math to make into seconds.
 
-/*
-Access to image at from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
-*/
