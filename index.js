@@ -6,6 +6,27 @@ let mazeWidth = 600;
 let mazeHeight = 600;
 let intervalVar;
 
+function getMaze1(){
+  return fetch()
+}
+
+function getScores(){
+  return fetch('http://localhost:3000/api/v1/scores')
+    .then(function (response) {return response.json() })
+    .then(function (scores) {
+      let ul = document.getElementById("scores")
+      scores.forEach(function (score){
+        let scoreLi = document.createElement("li")
+        scoreLi.innerText = `
+        Name: ${score.player} - Score: ${score.score}
+        `
+        ul.appendChild(scoreLi)
+        console.log(scoreLi)
+      })
+    })
+}
+getScores()
+
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
 let imgContext = imgCanvas.getContext("2d");
@@ -50,6 +71,7 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
         // context.fill();
 
     }
+
     scoreNum += 1
     console.log(scoreNum)
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
@@ -88,7 +110,10 @@ function drawImage(){ //second layer code
 
 }
 
+
+
 // can move code
+
 function canMoveTo(squareX, squareY) {
   var imgData = context.getImageData(squareX, squareY, 10, 10);
   var data = imgData.data;
@@ -112,7 +137,7 @@ function canMoveTo(squareX, squareY) {
   return canMove;
 
   
-}
+// }
 drawImage()
 setInterval(drawMazeAndRectangle,1000/60) //score is done on a fixed 60fps timer (more resource intensive) however, this allows us to append our score counter to this, causing it to go up by 1 every frame and then do math to make into seconds.
 
