@@ -6,6 +6,27 @@ let mazeWidth = 600;
 let mazeHeight = 600;
 let intervalVar;
 
+function getMaze1(){
+  return fetch()
+}
+
+function getScores(){
+  return fetch('http://localhost:3000/api/v1/scores')
+    .then(function (response) {return response.json() })
+    .then(function (scores) {
+      let ul = document.getElementById("scores")
+      scores.forEach(function (score){
+        let scoreLi = document.createElement("li")
+        scoreLi.innerText = `
+        Name: ${score.player} - Score: ${score.score}
+        `
+        ul.appendChild(scoreLi)
+        console.log(scoreLi)
+      })
+    })
+}
+getScores()
+
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
 let imgContext = imgCanvas.getContext("2d");
@@ -31,7 +52,7 @@ function drawPaddle() { //draws square
 
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
-    mazeImg.crossOrigin = "Anonymous";
+    // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
         // context.drawImage(mazeImg, 0, 0);
         // context.beginPath();
@@ -41,8 +62,8 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
         // context.fill();
 
     }
-    mazeImg.src = "assets/simplemaze.png"
-    canMoveTo(squareX, squareY)
+    mazeImg.src = "http://localhost:3000/app/assets/simplemaze.png"
+    // canMoveTo(squareX, squareY)
     drawPaddle()
 }
 
@@ -63,7 +84,7 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
 
 function drawImage(){ //second layer code
   let mazeImg = new Image();
-  mazeImg.crossOrigin = "Anonymous";
+  // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
         imgContext.drawImage(mazeImg, 0, 0);
         imgContext.beginPath();
@@ -76,31 +97,33 @@ function drawImage(){ //second layer code
 
 }
 
+
+
 // can move code
-function canMoveTo(squareX, squareY) {
-  var imgData = context.getImageData(squareX, squareY, 10, 10);
-  var data = imgData.data;
-  var canMove = 1; // 1 means: the rectangle can move
-  if (squareX >= 0 && squareX <= mazeWidth - 15 && squareY >= 0 && squareY <= mazeHeight - 15) { // check whether the rectangle would move inside the bounds of the canvas
-      for (var i = 0; i < 4 * 15 * 15; i += 4) { // look at all pixels
-          if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
-              canMove = 0; // 0 means: the rectangle can't move
-              break;
-          }
-          else if (data[i] === 0 && data[i + 1] === 255 && data[i + 2] === 0) { // lime: #00FF00
-              canMove = 2; // 2 means: the end point is reached
-              break;
-          }
-      }
-  }
-  else {
-      canMove = 0;
-  }
-  console.log(canMove)
-  return canMove;
+// function canMoveTo(squareX, squareY) {
+// //   var imgData = context.getImageData(squareX, squareY, 10, 10);
+//   var data = imgData.data;
+//   var canMove = 1; // 1 means: the rectangle can move
+//   if (squareX >= 0 && squareX <= mazeWidth - 15 && squareY >= 0 && squareY <= mazeHeight - 15) { // check whether the rectangle would move inside the bounds of the canvas
+//       for (var i = 0; i < 4 * 15 * 15; i += 4) { // look at all pixels
+//           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
+//               canMove = 0; // 0 means: the rectangle can't move
+//               break;
+//           }
+//           else if (data[i] === 0 && data[i + 1] === 255 && data[i + 2] === 0) { // lime: #00FF00
+//               canMove = 2; // 2 means: the end point is reached
+//               break;
+//           }
+//       }
+//   }
+//   else {
+//       canMove = 0;
+//   }
+//   console.log(canMove)
+//   return canMove;
 
   
-}
+// }
 drawImage()
 setInterval(drawMazeAndRectangle,1000/60)
 
