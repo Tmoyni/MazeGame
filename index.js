@@ -16,7 +16,12 @@ let squareWidth = 10;
 let squareX = 18;
 let squareY = 18;
 
-function drawPaddle() { //draws square
+// score/timer
+let scoreNum = 0
+let scoreCounter = document.getElementById("score")
+
+//draws gameplay avatar/game piece/ etc
+function drawPaddle() { 
 
   context.clearRect(0, 0, canvas.width, canvas.height)
   context.beginPath();
@@ -27,11 +32,15 @@ function drawPaddle() { //draws square
   
 }
 
+//creating score counter
+let scoreHolder = document.createElement("div")
+scoreHolder.innerText = `Seconds: ${scoreNum}`
+scoreCounter.appendChild(scoreHolder)
 
 
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
-    mazeImg.crossOrigin = "Anonymous";
+    // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
         // context.drawImage(mazeImg, 0, 0);
         // context.beginPath();
@@ -41,6 +50,9 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
         // context.fill();
 
     }
+    scoreNum += 1
+    console.log(scoreNum)
+    scoreHolder.innerText = `Seconds: ${Math.trunc(scoreNum/60)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
     mazeImg.src = "assets/simplemaze.png"
     canMoveTo(squareX, squareY)
     drawPaddle()
@@ -63,7 +75,7 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
 
 function drawImage(){ //second layer code
   let mazeImg = new Image();
-  mazeImg.crossOrigin = "Anonymous";
+  // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
         imgContext.drawImage(mazeImg, 0, 0);
         imgContext.beginPath();
@@ -96,13 +108,13 @@ function canMoveTo(squareX, squareY) {
   else {
       canMove = 0;
   }
-  console.log(canMove)
+  // console.log(canMove)
   return canMove;
 
   
 }
 drawImage()
-setInterval(drawMazeAndRectangle,1000/60)
+setInterval(drawMazeAndRectangle,1000/60) //gonna try to make the score go up by 100 every 60th of a second appended to this call.
 
 /*
 Access to image at from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
