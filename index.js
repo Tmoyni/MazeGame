@@ -52,7 +52,7 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     }
     scoreNum += 1
     console.log(scoreNum)
-    scoreHolder.innerText = `Seconds: ${Math.trunc(scoreNum/60)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
+    scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
     mazeImg.src = "assets/simplemaze.png"
     canMoveTo(squareX, squareY)
     drawPaddle()
@@ -70,7 +70,7 @@ function makeWhite(x, y, w, h) {
 canvas.addEventListener("mousemove", function(event){ //mouse control here
   canvas.style.cursor = "none"
   squareX = event.clientX 
-  squareY = event.clientY  
+  squareY = event.clientY - 30 // have to reposition the y value now that we moved  
   })
 
 function drawImage(){ //second layer code
@@ -114,7 +114,7 @@ function canMoveTo(squareX, squareY) {
   
 }
 drawImage()
-setInterval(drawMazeAndRectangle,1000/60) //gonna try to make the score go up by 100 every 60th of a second appended to this call.
+setInterval(drawMazeAndRectangle,1000/60) //score is done on a fixed 60fps timer (more resource intensive) however, this allows us to append our score counter to this, causing it to go up by 1 every frame and then do math to make into seconds.
 
 /*
 Access to image at from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https.
