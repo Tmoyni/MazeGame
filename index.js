@@ -137,10 +137,8 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
         }
         else if (movingAllowed=== 0 && (xSpeed >25 || ySpeed >25)){
          console.log ("CHEATER")
-            window.alert("TRY AGAIN YOU FILTHY CHEATER")
+            // window.alert("TRY AGAIN YOU FILTHY CHEATER")
         }
-        
-      }
     })
 
 // function openForm() {
