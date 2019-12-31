@@ -4,7 +4,7 @@ let currRectX = 425;
 let currRectY = 3;
 let mazeWidth = 600;
 let mazeHeight = 600;
-let intervalVar;
+let intervalVar = setInterval(drawMazeAndRectangle,1000/60);
 
 
 function getScores(){
@@ -41,6 +41,7 @@ let scoreCounter = document.getElementById("score")
 //draws gameplay avatar/game piece/ etc
 function drawPaddle() { 
   context.clearRect(0, 0, canvas.width, canvas.height)
+    //  makeWhite(0, 0, canvas.width, canvas.height) //maybe make this work? might help our errors.
   context.beginPath();
   context.rect(squareX, squareY, squareWidth, squareHeight); //first two are position, second two is x/y size
   context.fillStyle = "#0095DD";
@@ -56,10 +57,10 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
     mazeImg.onload = function () {
         context.drawImage(mazeImg, 0, 0);
-        // context.beginPath();
-        // context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :        // context.closePath();
-        // context.fillStyle = '#00FF00';
-        // context.fill();
+        context.beginPath();
+        context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :        // context.closePath();
+        context.fillStyle = '#00FF00';
+        context.fill(); 
     }
     scoreNum += 1
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
@@ -125,7 +126,11 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
     squareX = event.clientX 
     squareY = event.clientY - 30 // have to reposition the y value now that we moved  
         }
+        else if (movingAllowed === 2) { // 2 means 'the rectangle reached the end point'
+        clearInterval(intervalVar); // we'll set the timer later in this article
+        scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
+    }
     })
 
 drawImage()
-setInterval(drawMazeAndRectangle,1000/60) //score is done on a fixed 60fps timer (more resource intensive) however, this allows us to append our score counter to this, causing it to go up by 1 every frame and then do math to make into seconds.
+ //score is done on a fixed 60fps timer (more resource intensive) however, this allows us to append our score counter to this, causing it to go up by 1 every frame and then do math to make into seconds.
