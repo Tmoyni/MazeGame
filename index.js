@@ -6,46 +6,16 @@ let mazeWidth = 600;
 let mazeHeight = 600;
 let intervalVar = setInterval(drawMazeAndRectangle,1000/60);
 
-
 function getScores(){
   return fetch('http://localhost:3000/api/v1/scores')
     .then(function (response) {return response.json() })
     .then(function (scores) {
       let ul = document.getElementById("scores")
+      ul.innerText = "High Scores"
       scores.forEach(function (score){
         let scoreLi = document.createElement("li")
         scoreLi.innerText = `
-        Name: ${score.player} - Score: ${score.score}
-        `
-        ul.appendChild(scoreLi)
-      })
-    })
-}
-
-getScores()
-
-
-// let getMaze1 = function (){
-//   return fetch('http://localhost:3000/api/v1/mazes/1')
-//   .then(function (response) {return response.json() })
-//   .then(function (maze){
-//     maze = maze.file
-//     return maze
-//   })
-// }
-
-// let filename = getMaze1();
-
-
-function getScores(){
-  return fetch('http://localhost:3000/api/v1/scores')
-    .then(function (response) {return response.json() })
-    .then(function (scores) {
-      let ul = document.getElementById("scores")
-      scores.forEach(function (score){
-        let scoreLi = document.createElement("li")
-        scoreLi.innerText = `
-        Name: ${score.player} - Score: ${score.score}
+        Name: ${score.player} - Time: ${score.score}
         `
         ul.appendChild(scoreLi)
       })
@@ -56,13 +26,11 @@ getScores()
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
 let imgContext = imgCanvas.getContext("2d");
-
 //making a game piece square 
 let squareHeight = 10;
 let squareWidth = 10;
 let squareX = 285;
 let squareY = 0;
-
 // score/timer
 let scoreNum = 0
 let scoreCounter = document.getElementById("score")
@@ -82,19 +50,8 @@ function drawPaddle() {
 let scoreHolder = document.createElement("div")
 scoreHolder.innerText = `Seconds: ${scoreNum}`
 scoreCounter.appendChild(scoreHolder)
-
-
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
-    mazeImg.onload = function () {
-        context.drawImage(mazeImg, 0, 0);
-        // context.beginPath();
-        // context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :(
-        // context.closePath();
-        // context.fillStyle = '#00FF00';
-        // context.fill();
-
-
     mazeImg.onload = function (){ 
         context.drawImage(mazeImg, 0, 0);
         context.beginPath();
@@ -102,13 +59,10 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
         context.fillStyle = '#00FF00';
         context.fill(); 
     }
-
     scoreNum += 1
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
     mazeImg.crossOrigin = "Anonymous";
     mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
-
-    canMoveTo(squareX, squareY)
     drawPaddle()
 }
 
@@ -126,7 +80,6 @@ function makeWhite(x, y, w, h) {
   // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
         makeWhite(0, 0, canvas.width, canvas.height)
-        
         imgContext.drawImage(mazeImg, 0, 0);
         imgContext.beginPath();
         imgContext.arc(403, 590, 7, 0, 2 * Math.PI, false); 
@@ -137,10 +90,7 @@ function makeWhite(x, y, w, h) {
         mazeImg.crossOrigin = "Anonymous";
         mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
         ;
-
 }
-
-
 
 // can move code
 
@@ -178,9 +128,36 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
         clearInterval(intervalVar); // somehow this works? gotta investigate.
         scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
+        let form = document.getElementById("myForm")
+        form.style.display = "block"
+        let scoretime = document.getElementById("scoretime")
+        scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
+        
     }
     })
 
-drawImage()
- //score is done on a fixed 60fps timer (more resource intensive) however, this allows us to append our score counter to this, causing it to go up by 1 every frame and then do math to make into seconds.
+// function openForm() {
+//     document.getElementById("myForm").style.display = "block";
+//     }
+    
+//     // function closeForm() {
+//     // document.getElementById("myForm").style.display = "none";
+// }
 
+document.addEventListener("submit", function(e){
+    e.preventDefault()
+    scoreTime = e.target[0].placeholder
+    name = e.target[1].value
+   
+    fetch('http://localhost:3000/api/v1/scores', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({player: name, score: scoreTime})
+    })
+    .then(response => console.log(response))
+    .then(getScores)
+    document.getElementById("myForm").style.display = "none";
+})
+      
+    
+drawImage()
