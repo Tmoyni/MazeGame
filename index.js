@@ -24,6 +24,35 @@ function getScores(){
 
 getScores()
 
+
+// let getMaze1 = function (){
+//   return fetch('http://localhost:3000/api/v1/mazes/1')
+//   .then(function (response) {return response.json() })
+//   .then(function (maze){
+//     maze = maze.file
+//     return maze
+//   })
+// }
+
+// let filename = getMaze1();
+
+
+function getScores(){
+  return fetch('http://localhost:3000/api/v1/scores')
+    .then(function (response) {return response.json() })
+    .then(function (scores) {
+      let ul = document.getElementById("scores")
+      scores.forEach(function (score){
+        let scoreLi = document.createElement("li")
+        scoreLi.innerText = `
+        Name: ${score.player} - Score: ${score.score}
+        `
+        ul.appendChild(scoreLi)
+      })
+    })
+}
+getScores()
+
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
 let imgContext = imgCanvas.getContext("2d");
@@ -57,6 +86,14 @@ scoreCounter.appendChild(scoreHolder)
 
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
+    mazeImg.onload = function () {
+        context.drawImage(mazeImg, 0, 0);
+        // context.beginPath();
+        // context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :(
+        // context.closePath();
+        // context.fillStyle = '#00FF00';
+        // context.fill();
+
 
     mazeImg.onload = function (){ 
         context.drawImage(mazeImg, 0, 0);
@@ -65,11 +102,13 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
         context.fillStyle = '#00FF00';
         context.fill(); 
     }
+
     scoreNum += 1
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
     mazeImg.crossOrigin = "Anonymous";
     mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
-    
+
+    canMoveTo(squareX, squareY)
     drawPaddle()
 }
 
@@ -98,9 +137,13 @@ function makeWhite(x, y, w, h) {
         mazeImg.crossOrigin = "Anonymous";
         mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
         ;
+
 }
 
+
+
 // can move code
+
 function canMoveTo(squareX, squareY) {
   let imgData = context.getImageData(squareX, squareY, squareWidth, squareHeight);
   let data = imgData.data;
@@ -140,3 +183,4 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
 
 drawImage()
  //score is done on a fixed 60fps timer (more resource intensive) however, this allows us to append our score counter to this, causing it to go up by 1 every frame and then do math to make into seconds.
+
