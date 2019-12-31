@@ -119,21 +119,28 @@ function canMoveTo(squareX, squareY) {
 
 canvas.addEventListener("mousemove", function(event){ //mouse control here
     movingAllowed = canMoveTo(event.clientX -5 , event.clientY-30);
-    console.log(movingAllowed)
+    let xSpeed = Math.abs((event.clientX -5) - squareX) //OOB checking
+    let ySpeed = Math.abs((event.clientY-30) - squareY)
+    console.log(xSpeed, ySpeed)
     canvas.style.cursor = "crosshair"
         if (movingAllowed === 1){
-    squareX = event.clientX - 5 
-    squareY = event.clientY - 30 // have to reposition the y value now that we moved  
+            squareX = event.clientX - 5 
+            squareY = event.clientY - 30 // have to reposition the y value now that we moved  
         }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
         clearInterval(intervalVar); // somehow this works? gotta investigate.
         scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
-        let form = document.getElementById("myForm")
-        form.style.display = "block"
-        let scoretime = document.getElementById("scoretime")
-        scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
+          let form = document.getElementById("myForm")
+              form.style.display = "block"
+          let scoretime = document.getElementById("scoretime")
+              scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
+        }
+        else if (movingAllowed=== 0 && (xSpeed >25 || ySpeed >25)){
+         console.log ("CHEATER")
+            window.alert("TRY AGAIN YOU FILTHY CHEATER")
+        }
         
-    }
+      }
     })
 
 // function openForm() {
