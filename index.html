@@ -1,7 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Triona and Gabe are the bestest ever!</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
   <!-- score div is uptop due to position problems for the moment -->
@@ -9,9 +11,24 @@
     <!-- main layer and interaction layer, may have to change style:position later -->
     <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
      <!--Second layer (image layer) below  -->
-    <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas> 
+    <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
     
+    <div class="form-popup" id="myForm">
+      <form action="/action_page.php" class="form-container">
+        <h1>You're a Winner!</h1>
+    
+        <label for="time"><b>Time</b></label>
+        <input id="scoretime" type="text" placeholder="time" name="time" readonly>
+    
+        <label for="psw"><b>Name</b></label>
+        <input type="name" placeholder="Enter Name" name="name" >
+    
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+
+    <ul id="scores" style="position: absolute; right: 0; top: 650; z-index: 1;">High Scores</ul>
+
   <script type="text/javascript" src="index.js" charset="utf-8"></script>
 </body>
 </html>
-
