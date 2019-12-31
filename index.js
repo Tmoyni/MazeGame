@@ -40,7 +40,7 @@ let scoreCounter = document.getElementById("score")
 
 //draws gameplay avatar/game piece/ etc
 function drawPaddle() { 
-//   context.clearRect(0, 0, canvas.width, canvas.height)
+    // context.clearRect(0, 0, canvas.width, canvas.height)
     // makeWhite(0, 0, canvas.width, canvas.height) //maybe make this work? might help our errors.
   context.beginPath();
   context.rect(squareX, squareY, squareWidth, squareHeight); //first two are position, second two is x/y size
@@ -109,11 +109,11 @@ function canMoveTo(squareX, squareY) {
       for (var i = 0; i < 4 * 10 * 10; i += 4) { // look at all pixels
           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
               canMove = 0; // 0 means: the rectangle can't move
-              scoreNum += 5
+              scoreNum += 9 // speeds up timer to penailize walls
               break;
           }
           else if (data[i] === 0 && data[i + 1] === 255 && data[i + 2] === 0) { // lime: #00FF00
-              canMove = 2; // 2 means: the end point is reached
+              canMove = 2; // 2 is win condition, hitting green
               break;
           }
       }
@@ -125,11 +125,11 @@ function canMoveTo(squareX, squareY) {
 }
 
 canvas.addEventListener("mousemove", function(event){ //mouse control here
-    movingAllowed = canMoveTo(event.clientX , event.clientY-30);
+    movingAllowed = canMoveTo(event.clientX -5 , event.clientY-30);
     console.log(movingAllowed)
-    canvas.style.cursor = "none"
+    canvas.style.cursor = "crosshair"
         if (movingAllowed === 1){
-    squareX = event.clientX 
+    squareX = event.clientX - 5 
     squareY = event.clientY - 30 // have to reposition the y value now that we moved  
         }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
