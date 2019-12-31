@@ -34,6 +34,7 @@ let squareY = 0;
 // score/timer
 let scoreNum = 0
 let scoreCounter = document.getElementById("score")
+let hax = " " //cheat detection
 
 //draws gameplay avatar/game piece/ etc
 function drawPaddle() { 
@@ -133,10 +134,15 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
           let form = document.getElementById("myForm")
               form.style.display = "block"
           let scoretime = document.getElementById("scoretime")
-              scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
+                if (hax === 1) {
+                scoretime.placeholder = `TRY AGAIN LOSER`
+                } else {
+                scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
+                }
         }
         else if (movingAllowed=== 0 && (xSpeed >25 || ySpeed >25)){
-         console.log ("CHEATER")
+         
+         hax = 1
             // window.alert("TRY AGAIN YOU FILTHY CHEATER")
         }
     })
