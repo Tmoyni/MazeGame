@@ -10,18 +10,64 @@ function getScores(){
   return fetch('http://localhost:3000/api/v1/scores')
     .then(function (response) {return response.json() })
     .then(function (scores) {
-      let ul = document.getElementById("scores")
-      ul.innerText = "High Scores"
+      let table = document.getElementById("scoretable")
       scores.forEach(function (score){
-        let scoreLi = document.createElement("li")
-        scoreLi.innerText = `
-        Name: ${score.player} - Time: ${score.score}
-        `
-        ul.appendChild(scoreLi)
+        let scoreTr = document.createElement("tr")
+        let nameTd = document.createElement("td")
+        let scoreTd = document.createElement("td")
+        table.appendChild(scoreTr)
+        nameTd.innerText = `${score.player}`
+        scoreTd.innerText = `${score.score}`
+        scoreTr.appendChild(nameTd)
+        scoreTr.appendChild(scoreTd)
       })
+      sortTableClick()
     })
 }
 getScores()
+
+// Sort Table
+const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+    const table = th.closest('table');
+    Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+        .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+        .forEach(tr => table.appendChild(tr) );
+})));
+
+function sortTableClick() {
+    let tableHead = document.getElementsByTagName( 'th' )[1]
+    tableHead.click()
+    tableHead.click()
+
+};
+
+
+// function sortList(ul){
+//     var newUl = ul.cloneNode(false);
+
+//     // Add all lis to an array
+//     var lis = [];
+//     for(var i = ul.childNodes.length; i--;){
+//         if(ul.childNodes[i].nodeName === 'LI')
+//             lis.push(ul.childNodes[i]);
+//     }
+//     console.log(lis[0])
+//     // Sort the lis in descending order
+//     lis.sort(function(a, b){
+//        return parseInt(b.childNodes[0].data , 10) - 
+//               parseInt(a.childNodes[0].data , 10);
+//     });
+
+//     // Add them into the ul in order
+//     for(var i = 0; i < lis.length; i++)
+//         newUl.appendChild(lis[i]);
+//     ul.parentNode.replaceChild(newUl, ul);
+// }
 
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");

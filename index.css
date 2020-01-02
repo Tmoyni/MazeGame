@@ -1,5 +1,11 @@
 /* {box-sizing: border-box;} */
 
+table {
+  overflow-y:scroll;
+  height:240px;
+  display:block;
+}
+
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
   background-color: #555;
@@ -23,6 +29,8 @@
   border: 3px solid #f1f1f1;
   z-index: 9;
 }
+
+
 
 /* Add styles to the form container */
 .form-container {
