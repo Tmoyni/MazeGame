@@ -24,7 +24,7 @@ function getScores(){
         scoreTr.appendChild(nameTd)
         scoreTr.appendChild(scoreTd)
       })
-      sortTableClick()
+    //   sortTableClick()
     })
 }
 getScores()
@@ -46,6 +46,15 @@ function sortTableClick() {
     let tableHead = document.getElementsByTagName( 'th' )[1]
     tableHead.click()
 };
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     let table = document.getElementById("scoretable")
+//     console.log(table)
+//     table.DataTable({
+//     "order": [[ 1, "asc" ]]
+//     });
+//     ('.dataTables_length').addClass('bs-select');
+// });
 
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
@@ -69,6 +78,7 @@ let startModal = document.getElementById("startGame")
 // warnings
 let wallWarning = document.getElementById("warn")
 let wallBreak = document.getElementById("wallbreak")
+let alerts = document.getElementById("alerts")
 
 //draws gameplay avatar/game piece/ etc
 function drawPaddle() { 
@@ -148,6 +158,7 @@ function canMoveTo(squareX, squareY) {
       for (var i = 0; i < 4 * 7 * 7; i += 4) { // look at all pixels
           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
               canMove = 0; // 0 means: the rectangle can't move
+              alerts.style.visibility = "visible"
               wallWarning.innerText = "WALL HIT 2x PENALITY TIME" // wall touch warning
               scoreNum += 9 // speeds up timer to penailize walls
               hit.play()
@@ -167,29 +178,29 @@ function canMoveTo(squareX, squareY) {
 
 canvas.addEventListener("mousemove", function(event){ //mouse control here
     theme.play()
-    movingAllowed = canMoveTo(event.clientX-3, event.clientY-28);
+    movingAllowed = canMoveTo(event.clientX-3, event.clientY);
     let xSpeed = Math.abs((event.clientX-3) - squareX) //OOB checking
-    let ySpeed = Math.abs((event.clientY-28) - squareY)
-    console.log(xSpeed,ySpeed)
+    let ySpeed = Math.abs((event.clientY) - squareY)
     canvas.style.cursor = "crosshair"
         if (movingAllowed === 1){
             squareX = event.clientX - 3 
-            squareY = event.clientY - 28 // have to reposition the y value now that we moved 
+            squareY = event.clientY // have to reposition the y value now that we moved 
             wallWarning.innerText = " " 
         }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
             clearInterval(intervalVar); // somehow this works? gotta investigate.
             win.play()
             scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
+            scoreHolder.className = "alert alert-success"
               let form = document.getElementById("myForm")
                     form.style.display = "block"
               let scoretime = document.getElementById("scoretime")
                     scoretime.placeholder = `${((scoreNum/60)+(hax*5)).toFixed(2)}` //5 second penality per wall break
         }
         else if (movingAllowed=== 0 && (xSpeed >24 || ySpeed >24)){
-         console.log("ya cheated ya dingus")
          hax += 1
          bees.play()
+         alerts.style.visibility = "visible"
          wallBreak.innerText = `Wall Break Warning! ${hax * 5} seconds added!` //wallbreak warning
         // window.alert("TRY AGAIN YOU FILTHY CHEATER")
         }
@@ -217,6 +228,7 @@ startButton.addEventListener("click", function(e){
     startModal.style.display = "none";
     hax = 0
     scoreNum = 0
+    sortTableClick()
 })
     
 drawImage()
