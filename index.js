@@ -5,17 +5,20 @@ let currRectY = 3;
 let mazeWidth = 600;
 let mazeHeight = 600;
 let intervalVar = setInterval(drawMazeAndRectangle,1000/60);
+let level1Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/4FH1YHc.png"
+let level2Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/y3ITXIb.png"
 
 function getScores(){
   return fetch('http://localhost:3000/api/v1/scores')
     .then(function (response) {return response.json() })
     .then(function (scores) {
-      let table = document.getElementById("scoretable")
+      let tablebody = document.getElementById("tbody")
+      tablebody.innerText = ""
       scores.forEach(function (score){
         let scoreTr = document.createElement("tr")
         let nameTd = document.createElement("td")
         let scoreTd = document.createElement("td")
-        table.appendChild(scoreTr)
+        tablebody.appendChild(scoreTr)
         nameTd.innerText = `${score.player}`
         scoreTd.innerText = `${score.score}`
         scoreTr.appendChild(nameTd)
@@ -27,47 +30,22 @@ function getScores(){
 getScores()
 
 // Sort Table
-const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
+let getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+let comparer = (idx, asc) => (a, b) => ((v1, v2) => 
     v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
     )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
 
 document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-    const table = th.closest('table');
-    Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+    let tablebody = document.getElementById("tbody")
+    Array.from(tablebody.querySelectorAll('tr:nth-child(n+1)'))
         .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-        .forEach(tr => table.appendChild(tr) );
+        .forEach(tr => tablebody.appendChild(tr) );
 })));
 
 function sortTableClick() {
     let tableHead = document.getElementsByTagName( 'th' )[1]
     tableHead.click()
-    tableHead.click()
-
 };
-
-
-// function sortList(ul){
-//     var newUl = ul.cloneNode(false);
-
-//     // Add all lis to an array
-//     var lis = [];
-//     for(var i = ul.childNodes.length; i--;){
-//         if(ul.childNodes[i].nodeName === 'LI')
-//             lis.push(ul.childNodes[i]);
-//     }
-//     console.log(lis[0])
-//     // Sort the lis in descending order
-//     lis.sort(function(a, b){
-//        return parseInt(b.childNodes[0].data , 10) - 
-//               parseInt(a.childNodes[0].data , 10);
-//     });
-
-//     // Add them into the ul in order
-//     for(var i = 0; i < lis.length; i++)
-//         newUl.appendChild(lis[i]);
-//     ul.parentNode.replaceChild(newUl, ul);
-// }
 
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
@@ -122,6 +100,8 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
     mazeImg.crossOrigin = "Anonymous";
     mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
+    // mazeImg.src = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/swzhU5E.png"
+
     drawPaddle()
 }
 
@@ -148,6 +128,7 @@ function makeWhite(x, y, w, h) {
     };
         mazeImg.crossOrigin = "Anonymous";
         mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
+        // mazeImg.src = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/swzhU5E.png"
         ;
 }
 
