@@ -13,6 +13,7 @@
      <!--Second layer (image layer) below  -->
     <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
     
+    
 
     <!-- you win form -->
     <div class="form-popup" id="myForm">
@@ -28,16 +29,29 @@
         <button type="submit" class="btn">Submit</button>
       </form>
     </div>
-    <!-- score list -->
-    <ul id="scores" style="position: absolute; right: 0; top: 650; z-index: 1;">High Scores</ul>
-
-    <!-- alarm panel -->
-    <div id="alerts" style="position: absolute; left: 0; top: 600px; z-index: 2;">
+   <!-- alarm panel -->
+    <div id="alerts" style="position: absolute; left: 0; top: 600px; z-index: 1;">
       <p>WARNINGS:</p>
       <li><span id="wallbreak"> </span>
       <li><span id="warn"> </span>
     </div>
 
+    <!-- game start popup -->
+    <div class="startModal" id="startGame">
+        <div class="modal-content">
+        <h1>Welcome to our game!</h1>
+        <h4>The rules:</h4>
+        <ul>Get the blue square to the green dot</ul>
+        <ul>Touching walls makes the timer go twice as fast</ul>
+        <ul>Going too far into walls causes large time penalities</ul>
+        <ul>Good Luck, Have Fun And Aim For The Fastest Time!</ul>
+        <button type="button" id="startbutton" style= "float:right">Ok! Got it!</button>
+    </div>
+
+    <!-- score list -->
+    <ul id="scores" style="position: absolute; right: 0; top: 650; z-index: 1;">High Scores</ul>
+
+   
   <script type="text/javascript" src="index.js" charset="utf-8"></script>
 </body>
 </html>

@@ -38,6 +38,10 @@ let scoreNum = 0
 let scoreCounter = document.getElementById("score")
 let hax = 0 //cheat detection
 
+//startbutton
+let startButton = document.getElementById("startbutton")
+let startModal = document.getElementById("startGame")
+
 // warnings
 let wallWarning = document.getElementById("warn")
 let wallBreak = document.getElementById("wallbreak")
@@ -59,9 +63,11 @@ scoreCounter.appendChild(scoreHolder)
 
 //sound!
 let bees = new Audio(`assets/Beesshort.mp3`)
+bees.volume = .4
 let hit = new Audio(`assets/quakehit.wav`)
-let win = new Audio(`assets/gameoveryeah.mp3`)
+let win = new Audio(`assets/win31.mp3`)
 let theme = new Audio(`assets/moontheme.mp3`)
+theme.volume = .25
 
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
@@ -88,7 +94,7 @@ function makeWhite(x, y, w, h) {
     context.fill();
 }
 
-  function drawImage(){ //second layer code
+function drawImage(){ //second layer code
   let mazeImg = new Image();
   // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
@@ -149,11 +155,11 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
             win.play()
             scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
               let form = document.getElementById("myForm")
-                  form.style.display = "block"
+                    form.style.display = "block"
               let scoretime = document.getElementById("scoretime")
                     scoretime.placeholder = `${((scoreNum/60)+(hax*5)).toFixed(2)}` //5 second penality per wall break
         }
-        else if (movingAllowed=== 0 && (xSpeed >25 || ySpeed >25)){
+        else if (movingAllowed=== 0 && (xSpeed >24 || ySpeed >24)){
          console.log("ya cheated ya dingus")
          hax += 1
          bees.play()
@@ -178,7 +184,13 @@ document.addEventListener("submit", function(e){
     document.getElementById("myForm").style.display = "none";
 })
 
-//
+//start button!
+startButton.addEventListener("click", function(e){
+    console.log("clicked!")
+    startModal.style.display = "none";
+    hax = 0
+    scoreNum = 0
+})
     
 drawImage()
 
