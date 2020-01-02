@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html>
+
   <head>
       <title>Triona and Gabe are the bestest ever!</title>
       <link rel="stylesheet" type="text/css" href="index.css">
@@ -14,7 +15,17 @@
       <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
       <!--Second layer (image layer) below  -->
       <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
-      
+        <!-- game start popup -->
+      <div class="startModal" id="startGame">
+          <div class="modal-content">
+          <h1>Welcome to our game!</h1>
+          <h4>The rules:</h4>
+          <ul>Get the blue square to the green dot</ul>
+          <ul>Touching walls makes the timer go twice as fast</ul>
+          <ul>Going too far into walls causes large time penalities</ul>
+          <ul>Good Luck, Have Fun And Aim For The Fastest Time!</ul>
+          <button type="button" id="startbutton" class="btn">Ok! Got it!</button>
+      </div>
 
       <!-- you win form -->
       <div class="form-popup" id="myForm">
@@ -50,6 +61,9 @@
         <li><span id="wallbreak"> </span>
         <li><span id="warn"> </span>
       </div>
+    
+   
+
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
