@@ -30,8 +30,8 @@ let imgContext = imgCanvas.getContext("2d");
 //making a game piece square 
 let squareHeight = 7;
 let squareWidth = 7;
-let squareX = 285; //initial position (relative to maze)
-let squareY = 0;
+let squareX = " "; //initial position cleared for new mazes
+let squareY = " ";
 
 // score/timer
 let scoreNum = 0
@@ -195,17 +195,3 @@ startButton.addEventListener("click", function(e){
 drawImage()
 
 //gabe score is around 100 seconds
-
-/* old anti-hax code
-else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
-        clearInterval(intervalVar); // somehow this works? gotta investigate.
-        scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
-          let form = document.getElementById("myForm")
-              form.style.display = "block"
-          let scoretime = document.getElementById("scoretime")
-                if (hax >= 20) {
-                scoretime.placeholder = `TRY AGAIN LOSER`
-                } else {
-                scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
-                }
-*/
