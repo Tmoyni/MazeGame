@@ -53,8 +53,9 @@ function drawPaddle() {
 
 //creating score counter
 let scoreHolder = document.createElement("div")
-scoreHolder.innerText = `Seconds: ${scoreNum}`
 scoreCounter.appendChild(scoreHolder)
+
+
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
     mazeImg.onload = function (){ 
@@ -107,7 +108,7 @@ function canMoveTo(squareX, squareY) {
       for (var i = 0; i < 4 * 10 * 10; i += 4) { // look at all pixels
           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
               canMove = 0; // 0 means: the rectangle can't move
-              wallWarning.innerText = "WALL HIT 2x TIME"
+              wallWarning.innerText = "WALL HIT 2x PENALITY TIME" // wall touch warning
               scoreNum += 9 // speeds up timer to penailize walls
               break;
           }
@@ -141,15 +142,15 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
                   form.style.display = "block"
               let scoretime = document.getElementById("scoretime")
                     if (hax >= 20) {
-                    scoretime.placeholder = `TRY AGAIN LOSER`
+                    scoretime.placeholder = `TRY AGAIN`
                     } else {
-                    scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
+                    scoretime.placeholder = `${((scoreNum/60)+hax).toFixed(2)}` //1 second penality per wall break
                     }
         }
         else if (movingAllowed=== 0 && (xSpeed >28 || ySpeed >28)){
          console.log("ya cheated ya dingus")
          hax += 1
-         wallBreak.innerText = `Wall Break Warning! ${20 - hax} lives left!`
+         wallBreak.innerText = `Wall Break Warning! ${20 - hax} lives left!` //wallbreak warning
             if (hax > 20){
                 wallBreak.innerText = 'Try again! :('
             }
