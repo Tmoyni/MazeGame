@@ -26,11 +26,13 @@ getScores()
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
 let imgContext = imgCanvas.getContext("2d");
+
 //making a game piece square 
-let squareHeight = 10;
-let squareWidth = 10;
-let squareX = 285;
+let squareHeight = 7;
+let squareWidth = 7;
+let squareX = 285; //initial position (relative to maze)
 let squareY = 0;
+
 // score/timer
 let scoreNum = 0
 let scoreCounter = document.getElementById("score")
@@ -55,6 +57,11 @@ function drawPaddle() {
 let scoreHolder = document.createElement("div")
 scoreCounter.appendChild(scoreHolder)
 
+//sound!
+let bees = new Audio(`assets/Beesshort.mp3`)
+let hit = new Audio(`assets/quakehit.wav`)
+let win = new Audio(`assets/gameoveryeah.mp3`)
+let theme = new Audio(`assets/moontheme.mp3`)
 
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
@@ -105,11 +112,12 @@ function canMoveTo(squareX, squareY) {
   let data = imgData.data;
   let canMove = 1; // 1 means: the rectangle can move
   if (squareX >= 0 && squareX <= mazeWidth - 15 && squareY >= 0 && squareY <= mazeHeight - 15) { // check whether the rectangle would move inside the bounds of the canvas
-      for (var i = 0; i < 4 * 10 * 10; i += 4) { // look at all pixels
+      for (var i = 0; i < 4 * 7 * 7; i += 4) { // look at all pixels
           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
               canMove = 0; // 0 means: the rectangle can't move
               wallWarning.innerText = "WALL HIT 2x PENALITY TIME" // wall touch warning
               scoreNum += 9 // speeds up timer to penailize walls
+              hit.play()
               break;
           }
           else if (data[i] === 0 && data[i + 1] === 255 && data[i + 2] === 0) { // lime: #00FF00
@@ -125,35 +133,31 @@ function canMoveTo(squareX, squareY) {
 }
 
 canvas.addEventListener("mousemove", function(event){ //mouse control here
-    movingAllowed = canMoveTo(event.clientX -5 , event.clientY-30);
-    let xSpeed = Math.abs((event.clientX -5) - squareX) //OOB checking
-    let ySpeed = Math.abs((event.clientY-30) - squareY)
-    console.log(hax)
+    theme.play()
+    movingAllowed = canMoveTo(event.clientX-3, event.clientY-28);
+    let xSpeed = Math.abs((event.clientX-3) - squareX) //OOB checking
+    let ySpeed = Math.abs((event.clientY-28) - squareY)
+    console.log(xSpeed,ySpeed)
     canvas.style.cursor = "crosshair"
         if (movingAllowed === 1){
-            squareX = event.clientX - 5 
-            squareY = event.clientY - 30 // have to reposition the y value now that we moved 
+            squareX = event.clientX - 3 
+            squareY = event.clientY - 28 // have to reposition the y value now that we moved 
             wallWarning.innerText = " " 
         }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
             clearInterval(intervalVar); // somehow this works? gotta investigate.
+            win.play()
             scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
               let form = document.getElementById("myForm")
                   form.style.display = "block"
               let scoretime = document.getElementById("scoretime")
-                    if (hax >= 20) {
-                    scoretime.placeholder = `TRY AGAIN`
-                    } else {
-                    scoretime.placeholder = `${((scoreNum/60)+hax).toFixed(2)}` //1 second penality per wall break
-                    }
+                    scoretime.placeholder = `${((scoreNum/60)+(hax*5)).toFixed(2)}` //5 second penality per wall break
         }
-        else if (movingAllowed=== 0 && (xSpeed >28 || ySpeed >28)){
+        else if (movingAllowed=== 0 && (xSpeed >25 || ySpeed >25)){
          console.log("ya cheated ya dingus")
          hax += 1
-         wallBreak.innerText = `Wall Break Warning! ${20 - hax} lives left!` //wallbreak warning
-            if (hax > 20){
-                wallBreak.innerText = 'Try again! :('
-            }
+         bees.play()
+         wallBreak.innerText = `Wall Break Warning! ${hax * 5} seconds added!` //wallbreak warning
         // window.alert("TRY AGAIN YOU FILTHY CHEATER")
         }
     })
