@@ -13,6 +13,8 @@
      <!--Second layer (image layer) below  -->
     <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
     
+
+    <!-- you win form -->
     <div class="form-popup" id="myForm">
       <form action="/action_page.php" class="form-container">
         <h1>You're a Winner!</h1>
@@ -26,8 +28,15 @@
         <button type="submit" class="btn">Submit</button>
       </form>
     </div>
-
+    <!-- score list -->
     <ul id="scores" style="position: absolute; right: 0; top: 650; z-index: 1;">High Scores</ul>
+
+    <!-- alarm panel -->
+    <div id="alerts" style="position: absolute; left: 0; top: 600px; z-index: 2;">
+      <p>WARNINGS:</p>
+      <li><span id="wallbreak"> </span>
+      <li><span id="warn"> </span>
+    </div>
 
   <script type="text/javascript" src="index.js" charset="utf-8"></script>
 </body>
