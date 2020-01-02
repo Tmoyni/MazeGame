@@ -34,7 +34,11 @@ let squareY = 0;
 // score/timer
 let scoreNum = 0
 let scoreCounter = document.getElementById("score")
-let hax = " " //cheat detection
+let hax = 0 //cheat detection
+
+// warnings
+let wallWarning = document.getElementById("warn")
+let wallBreak = document.getElementById("wallbreak")
 
 //draws gameplay avatar/game piece/ etc
 function drawPaddle() { 
@@ -49,8 +53,9 @@ function drawPaddle() {
 
 //creating score counter
 let scoreHolder = document.createElement("div")
-scoreHolder.innerText = `Seconds: ${scoreNum}`
 scoreCounter.appendChild(scoreHolder)
+
+
 function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
     mazeImg.onload = function (){ 
@@ -103,6 +108,7 @@ function canMoveTo(squareX, squareY) {
       for (var i = 0; i < 4 * 10 * 10; i += 4) { // look at all pixels
           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
               canMove = 0; // 0 means: the rectangle can't move
+              wallWarning.innerText = "WALL HIT 2x PENALITY TIME" // wall touch warning
               scoreNum += 9 // speeds up timer to penailize walls
               break;
           }
@@ -122,38 +128,36 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
     movingAllowed = canMoveTo(event.clientX -5 , event.clientY-30);
     let xSpeed = Math.abs((event.clientX -5) - squareX) //OOB checking
     let ySpeed = Math.abs((event.clientY-30) - squareY)
-    console.log(xSpeed, ySpeed)
+    console.log(hax)
     canvas.style.cursor = "crosshair"
         if (movingAllowed === 1){
             squareX = event.clientX - 5 
-            squareY = event.clientY - 30 // have to reposition the y value now that we moved  
+            squareY = event.clientY - 30 // have to reposition the y value now that we moved 
+            wallWarning.innerText = " " 
         }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
-        clearInterval(intervalVar); // somehow this works? gotta investigate.
-        scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
-          let form = document.getElementById("myForm")
-              form.style.display = "block"
-          let scoretime = document.getElementById("scoretime")
-                if (hax === 1) {
-                scoretime.placeholder = `TRY AGAIN LOSER`
-                } else {
-                scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
-                }
+            clearInterval(intervalVar); // somehow this works? gotta investigate.
+            scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
+              let form = document.getElementById("myForm")
+                  form.style.display = "block"
+              let scoretime = document.getElementById("scoretime")
+                    if (hax >= 20) {
+                    scoretime.placeholder = `TRY AGAIN`
+                    } else {
+                    scoretime.placeholder = `${((scoreNum/60)+hax).toFixed(2)}` //1 second penality per wall break
+                    }
         }
-        else if (movingAllowed=== 0 && (xSpeed >25 || ySpeed >25)){
-         
-         hax = 1
-            // window.alert("TRY AGAIN YOU FILTHY CHEATER")
+        else if (movingAllowed=== 0 && (xSpeed >28 || ySpeed >28)){
+         console.log("ya cheated ya dingus")
+         hax += 1
+         wallBreak.innerText = `Wall Break Warning! ${20 - hax} lives left!` //wallbreak warning
+            if (hax > 20){
+                wallBreak.innerText = 'Try again! :('
+            }
+        // window.alert("TRY AGAIN YOU FILTHY CHEATER")
         }
     })
 
-// function openForm() {
-//     document.getElementById("myForm").style.display = "block";
-//     }
-    
-//     // function closeForm() {
-//     // document.getElementById("myForm").style.display = "none";
-// }
 
 document.addEventListener("submit", function(e){
     e.preventDefault()
@@ -169,6 +173,23 @@ document.addEventListener("submit", function(e){
     .then(getScores)
     document.getElementById("myForm").style.display = "none";
 })
-      
+
+//
     
 drawImage()
+
+//gabe score is around 100 seconds
+
+/* old anti-hax code
+else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
+        clearInterval(intervalVar); // somehow this works? gotta investigate.
+        scoreHolder.innerText = `HURRAY YOU WON! YOUR TIME WAS: ${(scoreNum/60).toFixed(2)}`
+          let form = document.getElementById("myForm")
+              form.style.display = "block"
+          let scoretime = document.getElementById("scoretime")
+                if (hax >= 20) {
+                scoretime.placeholder = `TRY AGAIN LOSER`
+                } else {
+                scoretime.placeholder = `${(scoreNum/60).toFixed(2)}`
+                }
+*/
