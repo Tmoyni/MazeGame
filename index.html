@@ -8,7 +8,11 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
   </head>
-  <body ody>
+
+  <body>
+    <div class="container">
+      
+    <!-- you win form -->
       <div class="form-popup" id="myForm">
         <form action="/action_page.php" class="form-container">
           <h1>You're a Winner!</h1>
@@ -23,37 +27,43 @@
         </form>
       </div>
 
-      <div class= "col-md-8">
-        <!-- main layer and interaction layer, may have to change style:position later -->
-        <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
-        <!--Second layer (image layer) below  -->
-        <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
+      <div>
+          <!-- main layer and interaction layer, may have to change style:position later -->
+          <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
+          <!--Second layer (image layer) below  -->
+          <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
       </div>
 
-      <!-- you win form -->
-      
-      
-      
-      <!-- score div is uptop due to position problems for the moment -->
-      <div id="score" class="col-md-4" style="position: absolute; right: 0; z-index: 1;"></div> 
 
+      
+      
+      
+      <!-- score div is up top due to position problems for the moment -->
+      <div class="card" style="width: 20rem; position: absolute; top: 40  px; right: 40px; z-index: 1;">
+        <div class="card-body">
+            <div id="score" class="h5 mb-0 font-weight-bold text-gray-800" ></div> 
+        </div>
+      </div>
+      
       <!-- score list -->
-      <div class="col-md-4" style="position: absolute; top: 100px; right: 0px; z-index: 1;">
-        <table class="table" id="scoretable" data-toggle="table" > 
-          <thead class="thead-dark">
-            <tr>
-              <th>Name</th> 
-              <th>Time</th> 
-            </tr> 
-          </thead>
-          <tbody id="tbody">
-          </tbody>
-        </table>
+      <div class="cardtable" style="width: 20rem; position: absolute; top: 60px; right: 40px; z-index: 1;">
+        <!-- <div class="col-md-4" style="position: absolute; top: 100px; right: 0px; z-index: 1;"> -->
+          <table class="table" id="scoretable"> 
+            <thead class="thead-dark">
+              <tr>
+                <th>Name</th> 
+                <th>Time</th> 
+              </tr> 
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        <!-- </div> -->
       </div>
 
 
       <!-- alarm panel -->
-      <div id="alerts" class="alert alert-danger" role="alert" style="position: absolute; right: 0; top: 400px; z-index: 2; visibility:hidden">
+      <div id="alerts" class="alert alert-danger" role="alert" style="position: absolute; right: 0; top: 470px; z-index: 2; visibility:hidden">
         <p>WARNINGS:</p>
         <li><span id="wallbreak"> </span>
         <li><span id="warn"> </span>
@@ -70,6 +80,9 @@
         <ul>Good Luck, Have Fun And Aim For The Fastest Time!</ul>
         <button type="button" id="startbutton" class="btn">Ok! Got it!</button>
       </div>
+
+  </div>
+
     
    
 
