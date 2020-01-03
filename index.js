@@ -5,8 +5,8 @@ let currRectY = 3;
 let mazeWidth = 600;
 let mazeHeight = 600;
 let intervalVar = setInterval(drawMazeAndRectangle,1000/60);
-let levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/TRCCRZy.png"
-let level1Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/TRCCRZy.png"
+let levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/cV3rqJT.png"
+let level1Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/cV3rqJT.png"
 let level2Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/upYI237.png"
 let levelnum = document.getElementById("levelnum")
 
@@ -18,14 +18,17 @@ function getScores(){
       let tablebody = document.getElementById("tbody")
       tablebody.innerText = ""
       scores.forEach(function (score){
+        let level = levelnum.innerText
         let scoreTr = document.createElement("tr")
         let nameTd = document.createElement("td")
         let scoreTd = document.createElement("td")
-        tablebody.appendChild(scoreTr)
-        nameTd.innerText = `${score.player}`
-        scoreTd.innerText = `${score.score}`
-        scoreTr.appendChild(nameTd)
-        scoreTr.appendChild(scoreTd)
+        if (level === `${score.level}`) {
+          tablebody.appendChild(scoreTr)
+          nameTd.innerText = `${score.player}`
+          scoreTd.innerText = `${score.score}`
+          scoreTr.appendChild(nameTd)
+          scoreTr.appendChild(scoreTd)
+        }
       })
       sortTable()
     })
@@ -231,6 +234,7 @@ document.addEventListener("submit", function(e){
     e.preventDefault()
     let scoreTime = e.target[0].placeholder
     let name = e.target[1].value
+    let level = levelnum.innerText
     ++levelnum.innerText
     
     hax = 0
@@ -243,22 +247,14 @@ document.addEventListener("submit", function(e){
     fetch('http://localhost:3000/api/v1/scores', {
       method: 'POST',
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      body: JSON.stringify({player: name, score: scoreTime})
+      body: JSON.stringify({player: name, score: scoreTime, level: level})
     })
     .then(response => console.log(response))
     .then(getScores)
     document.getElementById("myForm").style.display = "none";
 })
 
-// function changeLevel() {
-//     let levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/4FH1YHc.png"
-//     if (levelnum.innerText === 1) {
-//         levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/4FH1YHc.png"
-//     } else if (levelnum.innerText === 2) {
-//         levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/y3ITXIb.png"
-//     }
-//     return levelMaze
-// }
+
 
 //start button!
 startButton.addEventListener("click", function(e){
