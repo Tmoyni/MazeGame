@@ -9,11 +9,17 @@
 
   </head>
 
-  <body>
-    <div class="container">
-      
+  <body class="bg-gradient-special">
+
+    <header>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <small class="text-gray-100">Maze Game</small>
+      </div>
+    </header>
+    
+    <div class="container bg-gradient-special">
+
     <!-- you win form -->
-    <div class="row">
       <div class="form-popup" id="myForm">
         <form action="/action_page.php" class="form-container">
           <h1>You're a Winner!</h1>
@@ -27,16 +33,13 @@
           <button type="submit" class="btn">Submit</button>
         </form>
       </div>
-    </div>
 
     <div class="row">
       <div class="col-8">
-        <div>
-            <!-- main layer and interaction layer, may have to change style:position later -->
-            <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
-            <!--Second layer (image layer) below  -->
-            <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
-        </div>
+        <!-- main layer and interaction layer, may have to change style:position later -->
+        <canvas class="canvas" width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
+        <!--Second layer (image layer) below  -->
+        <canvas class="canvas" width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
       </div>
 
       <div class="col-4">
@@ -44,34 +47,34 @@
         <!-- <div class="card" style="width: 20rem; position: absolute; top: 40  px; right: 40px; z-index: 1;"> -->
         <div class="card" style="z-index: 1;">
           <div class="card-body">
-              <small class="text-muted" id="level">Level <span id="levelnum">1</span></small>
-              <div id="score" class="h5 mb-0 font-weight-bold text-gray-800" ></div> 
-          </div>
+            <small class="text-muted" id="level">Level <span id="levelnum">1</span></small>
+          <div id="score" class="h5 mb-0 font-weight-bold text-danger-800" ></div> 
         </div>
+      </div>
 
-        <!-- score list -->
-        <!-- <div class="cardtable" style="width: 20rem; position: absolute; top: 60px; right: 40px; z-index: 1;"> -->
-        <div class="cardtable" style="z-index: 1;">
-          <table class="table" id="scoretable"> 
-            <thead class="thead-dark">
-              <tr>
-                <th>Name</th> 
-                <th id="tabletime">Time</th> 
-              </tr> 
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-          </table>
-        </div>
+      <!-- score list -->
+      <!-- <div class="cardtable" style="width: 20rem; position: absolute; top: 60px; right: 40px; z-index: 1;"> -->
+      <div class="cardtable" style="z-index: 1;">
+        <table class="table" id="scoretable"> 
+          <thead class="thead-dark">
+            <tr>
+              <th>Name</th> 
+              <th id="tabletime">Time</th> 
+            </tr> 
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+        </table>
+      </div>
 
-         <!-- alarm panel -->
+      <!-- alarm panel -->
 
-          <div id="alerts" class="alert alert-danger" role="alert" style="z-index: 1; visibility:hidden">
-            <!-- <div id="alerts" class="alert alert-danger" role="alert" style="position: absolute; right: 0; top: 470px; z-index: 2; visibility:hidden"> -->
-            <p>WARNINGS:</p>
-            <li><span id="wallbreak"> </span>
-            <li><span id="warn"> </span>
-          </div>
+      <div id="alerts" class="alert alert-danger" role="alert" style="z-index: 1; visibility:hidden">
+        <!-- <div id="alerts" class="alert alert-danger" role="alert" style="position: absolute; right: 0; top: 470px; z-index: 2; visibility:hidden"> -->
+        <p>WARNINGS:</p>
+        <li><span id="wallbreak"> </span>
+        <li><span id="warn"> </span>
+      </div>
         
       </div>
     </div>

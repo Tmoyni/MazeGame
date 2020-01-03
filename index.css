@@ -10,6 +10,18 @@
   border-radius: 0.35rem;
 }
 
+.canvas {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+}
+
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
   background-color: #555;
@@ -70,10 +82,6 @@
   opacity: 0.8;
 }
 
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
 
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
@@ -85,14 +93,14 @@
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 3; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
+  padding-top: 50px; /* Location of the box */
+  padding-left: 600px;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
+  /* width: 100%; /* Full width */
+  /* height: 100%; Full height */ 
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  /* background-color: rgb(0,0,0); Fallback color */
+  /* background-color: rgba(0,0,0,0.4); Black w/ opacity */
 }
 
 .modal-content {
@@ -9808,6 +9816,10 @@ a:focus {
   background-size: cover;
 }
 
+.bg-gradient-special {
+  background: linear-gradient(to bottom right, #d53369 0%, #daae51 100%);
+}
+
 .bg-gradient-info {
   background-color: #36b9cc;
   background-image: linear-gradient(180deg, #36b9cc 10%, #258391 100%);
@@ -9916,6 +9928,10 @@ a:focus {
 
 .text-gray-800 {
   color: #5a5c69 !important;
+}
+
+.text-danger-800 {
+  color: #e74a3b !important;
 }
 
 .text-gray-900 {
