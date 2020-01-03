@@ -199,17 +199,22 @@ function canMoveTo(squareX, squareY) {
 
 
 canvas.addEventListener("mousemove", function(event){ //mouse control here
-    theme.play()
-    movingAllowed = canMoveTo(event.clientX-117, event.clientY-40);
-    let xSpeed = Math.abs((event.clientX-117) - squareX) //OOB checking
-    let ySpeed = Math.abs((event.clientY-40) - squareY)
-    // console.log (event.clientY, event.offsetY)
-    canvas.style.cursor = "crosshair"
-        if (movingAllowed === 1){
-            squareX = event.clientX - 117
-            squareY = event.clientY - 40// have to reposition the y value now that we moved 
-            wallWarning.innerText = " " 
-        }
+  theme.play()
+  let rect = canvas.getBoundingClientRect() // abs. size of element
+  let trueX = event.clientX - rect.left
+  let trueY = event.clientY - rect.top
+  console.log(rect.left)
+  //x -117 for screen //-155 for my laptop 
+  movingAllowed = canMoveTo(trueX, trueY);
+  let xSpeed = Math.abs((trueX) - squareX) //OOB checking
+  let ySpeed = Math.abs((trueY) - squareY)
+  // console.log (event.clientY, event.offsetY)
+  canvas.style.cursor = "crosshair"
+      if (movingAllowed === 1){
+          squareX = trueX
+          squareY = trueY 
+          wallWarning.innerText = " " 
+      }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
             clearInterval(intervalVar); // somehow this works? gotta investigate.
             win.play()
@@ -237,6 +242,7 @@ document.addEventListener("submit", function(e){
     let level = levelnum.innerText
     ++levelnum.innerText
     
+    alerts.style.visibility = "hidden"
     hax = 0
     scoreNum = 0
     levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/upYI237.png"
