@@ -5,8 +5,11 @@ let currRectY = 3;
 let mazeWidth = 600;
 let mazeHeight = 600;
 let intervalVar = setInterval(drawMazeAndRectangle,1000/60);
-let level1Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/4FH1YHc.png"
-let level2Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/y3ITXIb.png"
+let levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/TRCCRZy.png"
+let level1Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/TRCCRZy.png"
+let level2Maze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/upYI237.png"
+let levelnum = document.getElementById("levelnum")
+
 
 function getScores(){
   return fetch('http://localhost:3000/api/v1/scores')
@@ -24,7 +27,7 @@ function getScores(){
         scoreTr.appendChild(nameTd)
         scoreTr.appendChild(scoreTd)
       })
-    //   sortTableClick()
+      sortTable()
     })
 }
 getScores()
@@ -35,16 +38,12 @@ let comparer = (idx, asc) => (a, b) => ((v1, v2) =>
     v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
     )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
 
-document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+function sortTable() {
     let tablebody = document.getElementById("tbody")
+    let th = document.getElementById("tabletime")
     Array.from(tablebody.querySelectorAll('tr:nth-child(n+1)'))
-        .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+        .sort(comparer(Array.from(th.parentNode.children).indexOf(th), !this.asc))
         .forEach(tr => tablebody.appendChild(tr) );
-})));
-
-function sortTableClick() {
-    let tableHead = document.getElementsByTagName( 'th' )[1]
-    tableHead.click()
 };
 
 // document.addEventListener("DOMContentLoaded", function() {
@@ -107,16 +106,20 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
     mazeImg.onload = function (){ 
         context.drawImage(mazeImg, 0, 0);
-        context.beginPath();
-        context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :        // context.closePath();
-        context.fillStyle = '#00FF00';
-        context.fill(); 
+        // context.beginPath();
+        // context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :        // context.closePath();
+        // context.fillStyle = '#00FF00';
+        // context.fill(); 
     }
     scoreNum += 1
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
     mazeImg.crossOrigin = "Anonymous";
-    mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
-    // mazeImg.src = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/swzhU5E.png"
+    
+    // changeLevel()
+    mazeImg.src = levelMaze
+    // if (levelnum.innerText === 1) {
+    //     mazeImg.src = level2Maze
+    // } 
 
     drawPaddle()
 }
@@ -132,21 +135,36 @@ function makeWhite(x, y, w, h) {
 
 function drawImage(){ //second layer code
   let mazeImg = new Image();
-  // mazeImg.crossOrigin = "Anonymous";
     mazeImg.onload = function () {
         makeWhite(0, 0, canvas.width, canvas.height)
         imgContext.drawImage(mazeImg, 0, 0);
-        imgContext.beginPath();
-        imgContext.arc(403, 590, 7, 0, 2 * Math.PI, false); 
-        imgContext.closePath();
-        imgContext.fillStyle = '#00FF00';
-        imgContext.fill();
+        // imgContext.beginPath();
+        // imgContext.arc(403, 590, 7, 0, 2 * Math.PI, false); 
+        // imgContext.closePath();
+        // imgContext.fillStyle = '#00FF00';
+        // imgContext.fill();
     };
         mazeImg.crossOrigin = "Anonymous";
-        mazeImg.src = "https://cors-anywhere.herokuapp.com/https://freesvg.org/img/simplemaze.png"
-        // mazeImg.src = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/swzhU5E.png"
-        ;
+        // changeLevel()
+        mazeImg.src = levelMaze
+        // if (levelnum.innerText === 1) {
+        //     mazeImg.src = level2Maze
+        // } 
 }
+
+// get mouse position for canvas not at 0,0
+
+function  getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect(), // abs. size of element
+        scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
+        scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
+  
+    return {
+      x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
+      y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+    }
+  }
+
 
 // can move code
 
@@ -163,8 +181,8 @@ function canMoveTo(squareX, squareY) {
               scoreNum += 9 // speeds up timer to penailize walls
               hit.play()
               break;
-          }
-          else if (data[i] === 0 && data[i + 1] === 255 && data[i + 2] === 0) { // lime: #00FF00
+        }
+          else if (data[i] < 60 && data[i + 1] > 200 && data[i + 2] < 40) { // lime: #00FF00
               canMove = 2; // 2 is win condition, hitting green
               break;
           }
@@ -176,15 +194,17 @@ function canMoveTo(squareX, squareY) {
   return canMove;
 }
 
+
 canvas.addEventListener("mousemove", function(event){ //mouse control here
     theme.play()
-    movingAllowed = canMoveTo(event.clientX-3, event.clientY);
-    let xSpeed = Math.abs((event.clientX-3) - squareX) //OOB checking
-    let ySpeed = Math.abs((event.clientY) - squareY)
+    movingAllowed = canMoveTo(event.clientX-117, event.clientY-40);
+    let xSpeed = Math.abs((event.clientX-117) - squareX) //OOB checking
+    let ySpeed = Math.abs((event.clientY-40) - squareY)
+    // console.log (event.clientY, event.offsetY)
     canvas.style.cursor = "crosshair"
         if (movingAllowed === 1){
-            squareX = event.clientX - 3 
-            squareY = event.clientY // have to reposition the y value now that we moved 
+            squareX = event.clientX - 117
+            squareY = event.clientY - 40// have to reposition the y value now that we moved 
             wallWarning.innerText = " " 
         }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
@@ -209,8 +229,16 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
 
 document.addEventListener("submit", function(e){
     e.preventDefault()
-    scoreTime = e.target[0].placeholder
-    name = e.target[1].value
+    let scoreTime = e.target[0].placeholder
+    let name = e.target[1].value
+    ++levelnum.innerText
+    
+    hax = 0
+    scoreNum = 0
+    levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/upYI237.png"
+    drawImage()
+    setInterval(drawMazeAndRectangle,1000/60)
+    
    
     fetch('http://localhost:3000/api/v1/scores', {
       method: 'POST',
@@ -222,13 +250,21 @@ document.addEventListener("submit", function(e){
     document.getElementById("myForm").style.display = "none";
 })
 
+// function changeLevel() {
+//     let levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/4FH1YHc.png"
+//     if (levelnum.innerText === 1) {
+//         levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/4FH1YHc.png"
+//     } else if (levelnum.innerText === 2) {
+//         levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/y3ITXIb.png"
+//     }
+//     return levelMaze
+// }
+
 //start button!
 startButton.addEventListener("click", function(e){
-    console.log("clicked!")
     startModal.style.display = "none";
     hax = 0
     scoreNum = 0
-    sortTableClick()
 })
     
 drawImage()

@@ -9,9 +9,16 @@
 
   </head>
 
-  <body>
-    <div class="container">
-      
+  <body class="bg-gradient-special">
+
+    <header>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <small class="text-gray-100">Maze Game</small>
+      </div>
+    </header>
+    
+    <div class="container bg-gradient-special">
+
     <!-- you win form -->
       <div class="form-popup" id="myForm">
         <form action="/action_page.php" class="form-container">
@@ -27,47 +34,50 @@
         </form>
       </div>
 
-      <div>
-          <!-- main layer and interaction layer, may have to change style:position later -->
-          <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
-          <!--Second layer (image layer) below  -->
-          <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
+    <div class="row">
+      <div class="col-8">
+        <!-- main layer and interaction layer, may have to change style:position later -->
+        <canvas class="canvas" width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
+        <!--Second layer (image layer) below  -->
+        <canvas class="canvas" width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
       </div>
 
-
-      
-      
-      
-      <!-- score div is up top due to position problems for the moment -->
-      <div class="card" style="width: 20rem; position: absolute; top: 40  px; right: 40px; z-index: 1;">
-        <div class="card-body">
-            <div id="score" class="h5 mb-0 font-weight-bold text-gray-800" ></div> 
+      <div class="col-4">
+        <!-- score div is up top due to position problems for the moment -->
+        <!-- <div class="card" style="width: 20rem; position: absolute; top: 40  px; right: 40px; z-index: 1;"> -->
+        <div class="card" style="z-index: 1;">
+          <div class="card-body">
+            <small class="text-muted" id="level">Level <span id="levelnum">1</span></small>
+          <div id="score" class="h5 mb-0 font-weight-bold text-danger-800" ></div> 
         </div>
       </div>
-      
+
       <!-- score list -->
-      <div class="cardtable" style="width: 20rem; position: absolute; top: 60px; right: 40px; z-index: 1;">
-        <!-- <div class="col-md-4" style="position: absolute; top: 100px; right: 0px; z-index: 1;"> -->
-          <table class="table" id="scoretable"> 
-            <thead class="thead-dark">
-              <tr>
-                <th>Name</th> 
-                <th>Time</th> 
-              </tr> 
-            </thead>
-            <tbody id="tbody">
-            </tbody>
-          </table>
-        <!-- </div> -->
+      <!-- <div class="cardtable" style="width: 20rem; position: absolute; top: 60px; right: 40px; z-index: 1;"> -->
+      <div class="cardtable" style="z-index: 1;">
+        <table class="table" id="scoretable"> 
+          <thead class="thead-dark">
+            <tr>
+              <th>Name</th> 
+              <th id="tabletime">Time</th> 
+            </tr> 
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+        </table>
       </div>
 
-
       <!-- alarm panel -->
-      <div id="alerts" class="alert alert-danger" role="alert" style="position: absolute; right: 0; top: 470px; z-index: 2; visibility:hidden">
+
+      <div id="alerts" class="alert alert-danger" role="alert" style="z-index: 1; visibility:hidden">
+        <!-- <div id="alerts" class="alert alert-danger" role="alert" style="position: absolute; right: 0; top: 470px; z-index: 2; visibility:hidden"> -->
         <p>WARNINGS:</p>
         <li><span id="wallbreak"> </span>
         <li><span id="warn"> </span>
       </div>
+        
+      </div>
+    </div>
 
       <!-- game start popup -->
       <div class="startModal" id="startGame">
@@ -84,8 +94,6 @@
   </div>
 
     
-   
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
