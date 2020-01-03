@@ -27,11 +27,11 @@
         </form>
       </div>
 
-      <div>
+      <div style= "position: absolute; left:50px; top:100px">
           <!-- main layer and interaction layer, may have to change style:position later -->
-          <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 500; z-index: 1;"></canvas>
+          <canvas width="600" height="600" id="mazecanvas" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
           <!--Second layer (image layer) below  -->
-          <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 500; z-index: 0;"></canvas>
+          <canvas width="600" height="600" id="imgcanvas" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
       </div>
 
 
@@ -72,16 +72,15 @@
       <!-- game start popup -->
       <div class="startModal" id="startGame">
         <div class="modal-content">
-        <h1>Welcome to our game!</h1>
-        <h4>The rules:</h4>
-        <ul>Get the blue square to the green dot</ul>
-        <ul>Touching walls makes the timer go twice as fast</ul>
-        <ul>Going too far into walls causes large time penalities</ul>
-        <ul>Good Luck, Have Fun And Aim For The Fastest Time!</ul>
-        <button type="button" id="startbutton" class="btn">Ok! Got it!</button>
+          <h1>Welcome to our game!</h1>
+          <h4>The rules:</h4>
+          <ul>Get the blue square to the green dot</ul>
+          <ul>Touching walls makes the timer go twice as fast</ul>
+          <ul>Going too far into walls causes large time penalities</ul>
+          <ul>Good Luck, Have Fun And Aim For The Fastest Time!</ul>
+          <button type="button" id="startbutton" class="btn" style="float:right">Ok! Got it!</button>
+        </div>
       </div>
-
-  </div>
 
     
    

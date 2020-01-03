@@ -37,6 +37,7 @@ let comparer = (idx, asc) => (a, b) => ((v1, v2) =>
     )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
 
 document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+    console.log(th)
     let tablebody = document.getElementById("tbody")
     Array.from(tablebody.querySelectorAll('tr:nth-child(n+1)'))
         .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
@@ -179,13 +180,14 @@ function canMoveTo(squareX, squareY) {
 
 canvas.addEventListener("mousemove", function(event){ //mouse control here
     theme.play()
-    movingAllowed = canMoveTo(event.clientX-3, event.clientY);
-    let xSpeed = Math.abs((event.clientX-3) - squareX) //OOB checking
-    let ySpeed = Math.abs((event.clientY) - squareY)
+    movingAllowed = canMoveTo(event.clientX -53, event.clientY -103);
+    let xSpeed = Math.abs((event.clientX - 53) - squareX) //OOB checking
+    let ySpeed = Math.abs((event.clientY -103) - squareY)
+    console.log (event.clientX, event.offsetX)
     canvas.style.cursor = "crosshair"
         if (movingAllowed === 1){
-            squareX = event.clientX - 3 
-            squareY = event.clientY // have to reposition the y value now that we moved 
+            squareX = event.clientX - 53
+            squareY = event.clientY - 103 // have to reposition the y value now that we moved 
             wallWarning.innerText = " " 
         }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
@@ -229,7 +231,7 @@ startButton.addEventListener("click", function(e){
     startModal.style.display = "none";
     hax = 0
     scoreNum = 0
-    sortTableClick()
+    // sortTableClick()
 })
     
 drawImage()
