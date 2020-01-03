@@ -29,6 +29,7 @@ function getScores(){
 }
 getScores()
 
+// wants to sort lowest time to highest time
 // Sort Table
 let getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
 let comparer = (idx, asc) => (a, b) => ((v1, v2) => 
@@ -144,7 +145,7 @@ function canMoveTo(squareX, squareY) {
   let imgData = context.getImageData(squareX, squareY, squareWidth, squareHeight);
   let data = imgData.data;
   let canMove = 1; // 1 means: the rectangle can move
-  if (squareX >= 0 && squareX <= mazeWidth - 15 && squareY >= 0 && squareY <= mazeHeight - 15) { // check whether the rectangle would move inside the bounds of the canvas
+  if (squareX >= 0 && squareX <= mazeWidth - 7 && squareY >= 0 && squareY <= mazeHeight - 7) { // check whether the rectangle would move inside the bounds of the canvas
       for (var i = 0; i < 4 * 7 * 7; i += 4) { // look at all pixels
           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
               canMove = 0; // 0 means: the rectangle can't move
