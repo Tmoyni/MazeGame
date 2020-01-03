@@ -9639,6 +9639,8 @@ a.text-dark:hover, a.text-dark:focus {
   }
   .container {
     min-width: 992px !important;
+    background-color: rgb(226, 160, 160)
+
   }
   .navbar {
     display: none;
