@@ -10,6 +10,14 @@
   border-radius: 0.35rem;
 }
 
+.icon {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
 .canvas {
   position: relative;
   display: flex;
