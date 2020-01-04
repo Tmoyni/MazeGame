@@ -49,14 +49,6 @@ function sortTable() {
         .forEach(tr => tablebody.appendChild(tr) );
 };
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     let table = document.getElementById("scoretable")
-//     console.log(table)
-//     table.DataTable({
-//     "order": [[ 1, "asc" ]]
-//     });
-//     ('.dataTables_length').addClass('bs-select');
-// });
 
 //making a second layer
 let imgCanvas = document.getElementById("imgcanvas");
@@ -84,8 +76,6 @@ let alerts = document.getElementById("alerts")
 
 //draws gameplay avatar/game piece/ etc
 function drawPaddle() { 
-    // context.clearRect(0, 0, canvas.width, canvas.height)
-    // makeWhite(0, 0, canvas.width, canvas.height) //maybe make this work? might help our errors.
   context.beginPath();
   context.rect(squareX, squareY, squareWidth, squareHeight); //first two are position, second two is x/y size
   context.fillStyle = "#0095DD";
@@ -99,7 +89,7 @@ scoreCounter.appendChild(scoreHolder)
 
 //sound!
 let bees = new Audio(`assets/Beesshort.mp3`)
-bees.volume = .4
+bees.volume = .6
 let hit = new Audio(`assets/quakehit.wav`)
 let win = new Audio(`assets/win31.mp3`)
 let theme = new Audio(`assets/moontheme.mp3`)
@@ -109,26 +99,15 @@ function drawMazeAndRectangle(rectX, rectY) { //original maze and player piece
     let mazeImg = new Image();
     mazeImg.onload = function (){ 
         context.drawImage(mazeImg, 0, 0);
-        // context.beginPath();
-        // context.arc(403, 590, 7, 0, 2 * Math.PI, false); //this makes the goal circle, but I have it erasing the whole board so... :        // context.closePath();
-        // context.fillStyle = '#00FF00';
-        // context.fill(); 
     }
     scoreNum += 1
     scoreHolder.innerText = `Seconds: ${(scoreNum/60).toFixed(2)}` //updates our score here. currently in seconds. (stretch goal, countdown time meter?)
     mazeImg.crossOrigin = "Anonymous";
-    
-    // changeLevel()
     mazeImg.src = levelMaze
-    // if (levelnum.innerText === 1) {
-    //     mazeImg.src = level2Maze
-    // } 
-
     drawPaddle()
 }
 
 function makeWhite(x, y, w, h) {
-    // context.clearRect(0, 0, canvas.width, canvas.height)
     context.beginPath();
     context.rect(x, y, w, h);
     context.closePath();
@@ -141,32 +120,10 @@ function drawImage(){ //second layer code
     mazeImg.onload = function () {
         makeWhite(0, 0, canvas.width, canvas.height)
         imgContext.drawImage(mazeImg, 0, 0);
-        // imgContext.beginPath();
-        // imgContext.arc(403, 590, 7, 0, 2 * Math.PI, false); 
-        // imgContext.closePath();
-        // imgContext.fillStyle = '#00FF00';
-        // imgContext.fill();
     };
         mazeImg.crossOrigin = "Anonymous";
-        // changeLevel()
         mazeImg.src = levelMaze
-        // if (levelnum.innerText === 1) {
-        //     mazeImg.src = level2Maze
-        // } 
 }
-
-// get mouse position for canvas not at 0,0
-
-function  getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect(), // abs. size of element
-        scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
-        scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
-  
-    return {
-      x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
-      y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
-    }
-  }
 
 
 // can move code
@@ -179,7 +136,7 @@ function canMoveTo(squareX, squareY) {
       for (var i = 0; i < 4 * 7 * 7; i += 4) { // look at all pixels
           if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) { // black
               canMove = 0; // 0 means: the rectangle can't move
-              alerts.style.visibility = "visible"
+              alerts.style.visibility = "visible" //allows warning panel to popup
               wallWarning.innerText = "WALL HIT 2x PENALITY TIME" // wall touch warning
               scoreNum += 9 // speeds up timer to penailize walls
               hit.play()
@@ -201,18 +158,18 @@ function canMoveTo(squareX, squareY) {
 canvas.addEventListener("mousemove", function(event){ //mouse control here
   theme.play()
   let rect = canvas.getBoundingClientRect() // abs. size of element
-  let trueX = event.clientX - rect.left
+  let trueX = event.clientX - rect.left //true values are the including the window offset
   let trueY = event.clientY - rect.top
   console.log(rect.left)
   //x -117 for screen //-155 for my laptop 
-  movingAllowed = canMoveTo(trueX, trueY);
-  let xSpeed = Math.abs((trueX) - squareX) //OOB checking
-  let ySpeed = Math.abs((trueY) - squareY)
+  movingAllowed = canMoveTo(trueX -5, trueY -5);
+  let xSpeed = Math.abs((trueX-5) - squareX) //OOB checking
+  let ySpeed = Math.abs((trueY-5) - squareY)
   // console.log (event.clientY, event.offsetY)
   canvas.style.cursor = "crosshair"
       if (movingAllowed === 1){
-          squareX = trueX
-          squareY = trueY 
+          squareX = trueX -5
+          squareY = trueY -5
           wallWarning.innerText = " " 
       }
         else if (movingAllowed === 2) { // 2 meants it hit a green section (aka the end)
@@ -230,19 +187,18 @@ canvas.addEventListener("mousemove", function(event){ //mouse control here
          bees.play()
          alerts.style.visibility = "visible"
          wallBreak.innerText = `Wall Break Warning! ${hax * 5} seconds added!` //wallbreak warning
-        // window.alert("TRY AGAIN YOU FILTHY CHEATER")
         }
     })
 
 
+//our hand in our scores at end of game popup
 document.addEventListener("submit", function(e){
     e.preventDefault()
     let scoreTime = e.target[0].placeholder
     let name = e.target[1].value
     let level = levelnum.innerText
-    ++levelnum.innerText
-    
-    alerts.style.visibility = "hidden"
+    ++levelnum.innerText //this is where we should change levels
+    alerts.style.visibility = "hidden" //reseting warnings and timers
     hax = 0
     scoreNum = 0
     levelMaze = "https://cors-anywhere.herokuapp.com/https://i.imgur.com/upYI237.png"
@@ -260,15 +216,11 @@ document.addEventListener("submit", function(e){
     document.getElementById("myForm").style.display = "none";
 })
 
-
-
 //start button!
 startButton.addEventListener("click", function(e){
     startModal.style.display = "none";
     hax = 0
     scoreNum = 0
-})
-    
+})    
 drawImage()
 
-//gabe score is around 100 seconds
